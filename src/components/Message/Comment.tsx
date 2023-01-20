@@ -99,7 +99,7 @@ const Comment = (props: CommentPropType) => {
 									alt=""
 								/>
 								<p className="text-Dark_blue font-bold">
-									{props.user.username}
+									{props.comment.user.username}
 								</p>
 								{isSelfComment() && (
 									<div className="px-2 rounded-sm bg-Moderate_blue">
