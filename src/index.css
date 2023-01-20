@@ -1,4 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@layer components {
+  .whiteBg {
+    @apply bg-White p-4 rounded-lg;
+  }
+  .avatarIcon {
+    @apply h-10;
+  }
+  textarea {
+    @apply border-Light_grayish_blue border-2 w-full resize-none outline-Moderate_blue h-20 mx-4 rounded-lg px-4 py-2 caret-Moderate_blue text-Dark_blue;
+  }
+  button {
+    @apply transition-all hover:brightness-150;
+  }
+  button.solid {
+    @apply uppercase px-5 py-3 text-White rounded-lg font-medium h-full;
+  }
+  .iconScorePm {
+    @apply hover:brightness-50;
+  }
+}/*# sourceMappingURL=index.css.map */

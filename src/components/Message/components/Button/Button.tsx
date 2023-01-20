@@ -7,7 +7,7 @@ type ButtonPropType = {
 const Button = (props: ButtonPropType) => {
 	return (
 		<button
-			className={`flex items-center ${props.textColor} gap-x-2`}
+			className={`flex items-center ${props.textColor} gap-x-2 font-medium`}
 			onClick={() => props.onClick()}
 		>
 			<img src={props.icon} alt="" />

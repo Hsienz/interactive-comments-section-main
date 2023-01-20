@@ -3,6 +3,7 @@ import data from "../../data/data.json";
 import { useState } from "react";
 import { CommentType } from "../../type/type";
 import DeleteWarning from "../Message/components/DeleteWarning/DeleteWarning";
+import Input from "../Input/Input";
 const Card = () => {
 	const [comments, setComments] = useState<CommentType[]>(data.comments);
 	return (
@@ -18,6 +19,7 @@ const Card = () => {
 						setInWhichCommentArray={setComments}
 					/>
 				))}
+				<Input user={data.currentUser} comments={comments} setComments={setComments}/>
 			</div>
 		</div>
 	);

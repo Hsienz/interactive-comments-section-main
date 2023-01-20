@@ -7,6 +7,7 @@ import iconEdit from "../../assets/images/icon-edit.svg";
 import ReplyInput from "./components/ReplyInput.tsx/ReplyInput";
 import Button from "./components/Button/Button";
 import DeleteWarning from "./components/DeleteWarning/DeleteWarning";
+import { getSrc } from "../../data/avatarImages";
 export type CommentPropType = {
 	comment: CommentType;
 	user: UserType;
@@ -29,6 +30,9 @@ const Comment = (props: CommentPropType) => {
 	);
 	const [toggleReply, setToggleReply] = useState(false);
 	const [toggleDeleteWarning, setToggleDeleteWarning] = useState(false);
+	const [toggleEdit, setToggleEdit] = useState(false);
+	const [content, setContent] = useState(props.comment.content);
+	const [score, setScore] = useState(props.comment.score);
 	const isSelfComment = () => {
 		return props.user.username == props.comment.user.username;
 	};
@@ -39,6 +43,39 @@ const Comment = (props: CommentPropType) => {
 			props.atWhereCommentArray
 		);
 	};
+	const ReplyButton = () => (
+		<Button
+			value="Reply"
+			onClick={() => setToggleReply(!toggleReply)}
+			icon={iconReply}
+			textColor="text-Moderate_blue"
+		/>
+	);
+	const DeleteButton = () => (
+		<Button
+			value="Delete"
+			onClick={() => setToggleDeleteWarning(true)}
+			icon={iconDelete}
+			textColor="text-Soft_Red"
+		/>
+	);
+	const EditButton = () => (
+		<Button
+			value="Edit"
+			onClick={() => setToggleEdit(!toggleEdit)}
+			icon={iconEdit}
+			textColor="text-Moderate_blue"
+		/>
+	);
+	const AvailableButtons = () =>
+		isSelfComment() ? (
+			<div className="flex gap-x-4">
+				<DeleteButton />
+				<EditButton />
+			</div>
+		) : (
+			<ReplyButton />
+		);
 	return (
 		<div className="">
 			<div className={`${toggleDeleteWarning ? "" : "hidden"}`}>
@@ -48,53 +85,73 @@ const Comment = (props: CommentPropType) => {
 				/>
 			</div>
 			<div className="flex flex-col gap-y-4">
-				<div className="bg-White p-4 rounded-lg">
-					<div className="flex items-center gap-x-4">
-						<img
-							className="h-10"
-							src={"/src/assets/" + props.comment.user.image.png}
-							alt=""
-						/>
-						<p className="text-Dark_blue font-bold">
-							{props.user.username}
-						</p>
-						{isSelfComment() && (
-							<div className="px-2 rounded-sm bg-Moderate_blue">
-								<p className="text-White font-medium">you</p>
-							</div>
-						)}
-						<p className="text-Grayish_Blue">
-							{props.comment.createdAt}
-						</p>
-					</div>
-					<p className="text-Grayish_Blue my-4">
-						{props.comment.content}
-					</p>
-					<div className="flex justify-between">
-						<ScoreBar score={props.comment.score} />
-						{isSelfComment() ? (
-							<div className="flex gap-x-4">
-								<Button
-									value="Delete"
-									onClick={() => setToggleDeleteWarning(true)}
-									icon={iconDelete}
-									textColor="text-Soft_Red"
+				<div className="whiteBg">
+					<div className="flex flex-col gap-x-4 md:flex-row">
+						<div className="hidden md:block">
+							{" "}
+							<ScoreBar score={score} setScore={setScore} />
+						</div>
+						<div className="flex flex-col basis-full">
+							<div className="flex items-center gap-x-4">
+								<img
+									className="avatarIcon"
+									src={getSrc(props.comment.user.image.png)}
+									alt=""
 								/>
-								<Button
-									value="Edit"
-									onClick={() => {}}
-									icon={iconEdit}
-									textColor="text-Moderate_blue"
-								/>
+								<p className="text-Dark_blue font-bold">
+									{props.user.username}
+								</p>
+								{isSelfComment() && (
+									<div className="px-2 rounded-sm bg-Moderate_blue">
+										<p className="text-White font-medium">
+											you
+										</p>
+									</div>
+								)}
+								<p className="text-Grayish_Blue">
+									{props.comment.createdAt}
+								</p>
+								<div className="hidden md:block ml-auto">
+									<AvailableButtons />
+								</div>
 							</div>
-						) : (
-							<Button
-								value="Reply"
-								onClick={() => setToggleReply(!toggleReply)}
-								icon={iconReply}
-								textColor="text-Moderate_blue"
-							/>
-						)}
+							{toggleEdit ? (
+								<div className="flex flex-col">
+									<textarea
+										className="w-full outline-Moderate_blue p-4 rounded-lg my-2 h-24 resize-none"
+										value={content}
+										onChange={(e) =>
+											setContent(e.target.value)
+										}
+									/>
+									<div className="self-end">
+										{" "}
+										<button
+											onClick={() => setToggleEdit(false)}
+											className="solid bg-Moderate_blue"
+										>
+											Update
+										</button>
+									</div>
+								</div>
+							) : (
+								<p className="text-Grayish_Blue my-4">
+									{props.comment.replyingTo && (
+										<a
+											href="#"
+											className="text-Moderate_blue font-medium"
+										>
+											@{props.comment.replyingTo}{" "}
+										</a>
+									)}
+									{content}
+								</p>
+							)}
+						</div>
+						<div className="flex justify-between md:hidden">
+							<ScoreBar score={score} setScore={setScore} />
+							<AvailableButtons />
+						</div>
 					</div>
 				</div>
 				{(replies || toggleReply) && (
