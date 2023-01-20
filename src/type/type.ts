@@ -13,4 +13,5 @@ export type CommentType = {
     score: number,
     user: UserType,
     replies?: CommentType[]
+    replyingTo?: string
 }
